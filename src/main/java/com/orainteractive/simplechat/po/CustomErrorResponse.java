@@ -1,8 +1,6 @@
 package com.orainteractive.simplechat.po;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CustomErrorResponse {
 	private String message;
