@@ -57,6 +57,8 @@ url: http://localhost:8080/user (POST), sample data
 		"lastName": "Piper",
 		"email": "test@gmail.com"
 		}
+### view user
+url: http://localhost:8080/user/1 (GET), 1 is user id
 
 ### update user
 url: http://localhost:8080/user (PATCH), sample data
@@ -85,7 +87,11 @@ url: http://localhost:8080/chat (POST) , sample data
 		"message": "Chat message number 5 by user 1",
 		"postedDate": "2017-10-04T22:44:30.652"
 		}
-		
+
+
+### view chat
+url: http://localhost:8080/chat/5 (GET), 5 is chat id
+
 ### update chat
  url: http://localhost:8080/chat (PATCH), Sample data
  
@@ -112,7 +118,10 @@ url: http://localhost:8080/chat (POST) , sample data
 		"message": "message reply to chat id 1",
 		"postedDate": "2014-05-04T22:44:30.652"
 		}
-		
+
+### view message
+url: http://localhost:8080/message/1 (GET), 1 is chat message id
+
 ### update message
  url: http://localhost:8080/chat (PATCH), Sample data
  
