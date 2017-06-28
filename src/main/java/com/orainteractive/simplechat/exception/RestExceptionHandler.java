@@ -30,6 +30,14 @@ public class RestExceptionHandler {
 		return new ResponseEntity<CustomErrorResponse>(errors, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(ChatException.class)
+	public ResponseEntity<CustomErrorResponse> exceptionChatHandler(Exception ex) {
+		CustomErrorResponse errors = new CustomErrorResponse();
+		errors.setMessage(SimpleChatConstant.VALIDATION_FAILED);
+		errors.getErrors().put("ChatException ", ex.getMessage());
+		return new ResponseEntity<CustomErrorResponse>(errors, HttpStatus.NOT_FOUND);
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<CustomErrorResponse> exceptionHandler(Exception ex) {
 		CustomErrorResponse errors = new CustomErrorResponse();

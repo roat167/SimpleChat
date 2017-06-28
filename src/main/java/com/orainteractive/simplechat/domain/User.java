@@ -1,19 +1,27 @@
 package com.orainteractive.simplechat.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "users")
-public class User {
+public class User {	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -34,8 +42,17 @@ public class User {
 	@Email
 	@Column(length = 100)
 	private String email;
+	
+	@OneToMany(mappedBy="owner")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	//@JsonDeserialize(using = ChatListDeserializer.class)
+	private List<Chat> chats = new ArrayList<Chat>();
 
 	public User() {
+	}
+	
+	public User(Long id) {
+		this.id = id;
 	}
 
 	public User(Long id, String username, String password, String firstName, String lastName, String email) {
@@ -93,5 +110,13 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Chat> getChats() {
+		return chats;
+	}
+
+	public void setChats(List<Chat> chats) {
+		this.chats = chats;
 	}
 }

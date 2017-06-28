@@ -6,7 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses(value = { 
-		UserServiceTest.class
+		UserServiceTest.class,
+		ChatServiceTest.class
 })
 public class AllServiceTest {
 
