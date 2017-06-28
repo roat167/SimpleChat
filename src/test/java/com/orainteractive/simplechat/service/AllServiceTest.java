@@ -7,7 +7,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses(value = { 
 		UserServiceTest.class,
-		ChatServiceTest.class
+		ChatServiceTest.class,
+		ChatMessageServiceTest.class
 })
 public class AllServiceTest {
 

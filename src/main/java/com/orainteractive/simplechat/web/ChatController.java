@@ -34,7 +34,7 @@ public class ChatController extends BaseController {
 	@RequestMapping(value = "/chat", method = RequestMethod.GET)
 	public ResponseEntity<CustomResponse<Chat>> getChats() {
 		logger.info("ChatController.clazz getChats()");
-		Pageable pageable = new PageRequest(1, SimpleChatConstant.PER_PAGE);
+		Pageable pageable = new PageRequest(0, SimpleChatConstant.PER_PAGE);
 		Page<Chat> list = chatService.findPaginated(pageable);
 		CustomResponse<Chat> result = ResponseHelper.convertFromPage(list, pageable.getPageNumber(),
 				pageable.getPageSize());

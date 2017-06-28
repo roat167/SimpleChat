@@ -26,17 +26,17 @@ import com.orainteractive.simplechat.json.deserialize.DateDeserializer;
 import com.orainteractive.simplechat.json.deserialize.UserDeserializer;
 
 @Entity
-public class Chat {	
-	
+public class Chat {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@NotBlank
-	private String message;	
+	private String message;
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	@JsonDeserialize(using = UserDeserializer.class)
-	@NotNull(message = "Owner might be invalid or null")	
+	@NotNull(message = "Owner might be invalid or null")
 	private User owner;
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -50,6 +50,10 @@ public class Chat {
 	private List<ChatMessage> messages;
 
 	public Chat() {
+	}
+
+	public Chat(Long id) {
+		this.id = id;
 	}
 
 	public Chat(Long id, User owner, String message, Date postedDate) {

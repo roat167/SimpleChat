@@ -9,5 +9,11 @@ insert into orachat.users(id, username, password, first_name, last_name, email) 
 insert into orachat.users(id, username, password, first_name, last_name, email) values(10,'uzer2', '1234', 'chanpiseth', 'chea', 'cchea@mum.edu');
 
 --Table Chat
-insert into orachat.chat(id, user_id, message, posted_date) values(1, 1, 'First Posted by user Java id 1', '2017-10-04 22:44:30');
-insert into orachat.chat(id, user_id, message, posted_date) values(2, 2, 'First Posted by user dora id 2', '2017-05-04 22:44:30');
+insert into orachat.chat(id, user_id, message, posted_date) values(1, 1, 'First Posted by user Java id 1', '2017-03-04 22:44:30');
+insert into orachat.chat(id, user_id, message, posted_date) values(2, 2, 'First Posted by user dora id 2', '2017-06-07 20:44:30');
+
+--Table ChatMessage
+insert into orachat.chat_message(id, user_id, chat_id, message, posted_date) values(1, 1, 1, 'reply to chat id 1', '2017-06-04 22:45:00');
+insert into orachat.chat_message(id, user_id, chat_id, message, posted_date) values(2, 2, 2, 'reply to chat id 2 user 2', '2017-07-07 10:45:00');
+insert into orachat.chat_message(id, user_id, chat_id, message, posted_date) values(3, 1, 2, 'reply to chat id 1 user 1', '2017-06-06 10:45:00');
+
