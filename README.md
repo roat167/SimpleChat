@@ -29,11 +29,10 @@ Your machine should have :
 From the root of project directory (you will find pom.xml file there) run the following command
 	
 		mvn clean install
-		Go to the target folder
-		java -jar simplechat-0.0.1.jar
+
+		java -jar target/simplechat-0.0.1.jar
 	
-You also use the following command
-		
+You also use the following command		
 
 		mvn spring-boot:run
 	
@@ -41,7 +40,7 @@ You also use the following command
 The application will initialize some data from sample data set in import.sql in resource directory
 ## Using POSTMAN
 ### User list
-- url: http://localhost:8080/user	(GET)	return paginated list of users, with page number 0 as default
+- url: http://localhost:8080/user	(GET)	return list of users
 
 - url: http://localhost:8080/users/0	(GET)	return paginated list of users, with page number 0 as requested, you can change the number to see next page if available 
 
