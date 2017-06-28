@@ -90,7 +90,6 @@ public class ChatServiceTest {
 		Pageable pageable = new PageRequest(0, 50, new Sort(new Sort.Order(Sort.Direction.DESC, "postedDate")));
 		verify(chatRepository,times(1)).findAll(pageable);
 		
-		System.out.println("Page " + page);
 //		System.out.println("Normal page " + chatService.listAllByPage(new PageRequest(0, 50)));
 //		List<Chat> sortList = page.getContent();		
 //		

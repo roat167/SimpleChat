@@ -41,8 +41,7 @@ public class ChatMessageController extends BaseController {
 		Page<ChatMessage> list = chatMessageService.findPaginated(pageable);
 		CustomResponse<ChatMessage> result = ResponseHelper.convertFromPage(list, pageable.getPageNumber(),
 				pageable.getPageSize());
-
-		System.out.println("Result " + list.getContent().size());
+		
 		return new ResponseEntity<CustomResponse<ChatMessage>>(result, HttpStatus.OK);
 	}
 
@@ -52,7 +51,7 @@ public class ChatMessageController extends BaseController {
 
 		Page<ChatMessage> list = chatMessageService.findSortedPaginatedByDate(page, SimpleChatConstant.PER_PAGE);
 		CustomResponse<ChatMessage> result = ResponseHelper.convertFromPage(list, page, SimpleChatConstant.PER_PAGE);
-		System.out.println("Result ss " + list.getContent().size());
+		
 		return result;
 	}
 
