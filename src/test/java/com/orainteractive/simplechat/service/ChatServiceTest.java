@@ -86,7 +86,7 @@ public class ChatServiceTest {
 		when(chatRepository.findAll()).thenReturn(chats);
 		chats.forEach(s-> chatService.save(s));
 		
-		Page<Chat> page = chatService.getPageSortByDate(0, 50);
+		chatService.getPageSortByDate(0, 50);
 		Pageable pageable = new PageRequest(0, 50, new Sort(new Sort.Order(Sort.Direction.DESC, "postedDate")));
 		verify(chatRepository,times(1)).findAll(pageable);
 		
