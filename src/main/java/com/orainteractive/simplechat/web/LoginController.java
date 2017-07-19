@@ -18,7 +18,6 @@ import com.orainteractive.simplechat.exception.InvalidLoginException;
 import com.orainteractive.simplechat.exception.UsernameNotFoundException;
 import com.orainteractive.simplechat.po.LoginRequest;
 import com.orainteractive.simplechat.po.UserTokenState;
-import com.orainteractive.simplechat.security.CookieUtil;
 import com.orainteractive.simplechat.security.TokenHelper;
 import com.orainteractive.simplechat.service.UserService;
 
@@ -63,10 +62,10 @@ public class LoginController {
 		return jwtToken;
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public void logout(HttpServletResponse response) throws BaseException {		
-        CookieUtil.clear(response, JwtConstant.AUTH_COOKIE);
-	}
+//	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+//	public void logout(HttpServletResponse response) throws BaseException {		
+//        CookieUtil.clear(response, JwtConstant.AUTH_COOKIE);
+//	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response) {
