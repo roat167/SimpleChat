@@ -3,14 +3,15 @@
 This is a simple chat application that allows user to:
 
 	- [x] register
-	- [ ] login implements JWT
-	- [x] view their profile
-	- [x] edit their profile , [ ] implements securirty
+	- [X] login implements JWT
+	- [x] view profile
+	- [x] edit profile 
 	- [x] create a chat
-	- [x] edit a chat, [ ] implements securirty
+	- [x] edit a chat, [ ] implements securirty(Only owner can edit)
 	- [x] list all chats
 	- [x] view all messages in a chat
-	- [x] create a message in a chat	
+	- [x] create a message in a chat
+	- [ ] logout
 
 # Technologies
 	- Java
@@ -37,16 +38,42 @@ You also use the following command
 		mvn spring-boot:run
 	
 # Test
-The application will initialize some data from sample data set in import.sql in resource directory
+The application will initialize some data from sample data set in import.sql in resource directory.
+- Note: register and login request won't be filter with jwt. Other request required a valid token from successful login
 ## Using POSTMAN
+
+### Register
+- url: http://localhost:8080/register	(POST)	
+		
+		{		
+		"username": "reg",
+		"password": "1234",
+		"firstName": "reg",
+		"lastName": "user",
+		"email": "test@gmail.com"
+		}
+
+### Login
+- url: http://localhost:8080/login	(POST)	sample data
+
+		{		
+		"username": "reg",
+		"password": "1234"
+		}
+
+- Upon successful login it will return  jwt token
+## Note: Test JWT in Postman
+The easiest way is to apply your token you got after login and manually put on header before sending the request.
+Put key as 'Authorization' and value 'Bearer ' then your token
+
 ### User list
 - url: http://localhost:8080/user	(GET)	return list of users
 
 - url: http://localhost:8080/users/0	(GET)	return paginated list of users, with page number 0 as requested, you can change the number to see next page if available 
 
 Note: (username is unique)
-### register/create user
-url: http://localhost:8080/user (POST), sample data
+### create user
+url: http://localhost:8080/user (POST), sample data (id is not required, see register )
  
 		 {
 		"id":"7",
@@ -55,7 +82,7 @@ url: http://localhost:8080/user (POST), sample data
 		"firstName": "Python",
 		"lastName": "Piper",
 		"email": "test@gmail.com"
-		}
+		}		 
 ### view user
 url: http://localhost:8080/user/1 (GET), 1 is user id
 
