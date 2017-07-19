@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,15 +36,15 @@ public class UserController extends BaseController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public ResponseEntity<List<User>> getUsers() {
-		logger.info("UserController.clazz getUsers()");
+		logger.debug("UserController.clazz getUsers()");
 		return new ResponseEntity<List<User>>(userService.getAll(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/users/{page}", method = RequestMethod.GET)
-	public @ResponseBody CustomResponse<User> getPageUsers(@PathVariable("page") int page) {
-		logger.info("UserController.clazz getUsers()");
+	@RequestMapping(value = "/users", params = {"page"}, method = RequestMethod.GET)
+	public @ResponseBody CustomResponse<User> getPageUsers(@RequestParam("page") int page) {
+		logger.debug("UserController.clazz getUsers()");
 
 		Pageable pageable = new PageRequest(page, SimpleChatConstant.PER_PAGE);
 		Page<User> list = userService.listAllByPage(pageable);
@@ -52,9 +53,9 @@ public class UserController extends BaseController {
 		return result;
 	}
 
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUser(@PathVariable("id") long id) throws UserException {
-		logger.info("UserController.clazz getUser() id " + id);
+		logger.debug("UserController.clazz getUser() id " + id);
 
 		if (invalidUser(id)) {
 			logger.info("UserController.clazz getUser() can not be found with id::" + id);
@@ -63,9 +64,9 @@ public class UserController extends BaseController {
 		return new ResponseEntity<User>(userService.getById(id), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Response> delete(@PathVariable("id") long id) throws UserException {
-		logger.info("UserController.clazz delete() id" + id);
+		logger.debug("UserController.clazz delete() id" + id);
 
 		if (invalidUser(id)) {
 			logger.info("User to delete can not be found::id::" + id);
@@ -76,18 +77,18 @@ public class UserController extends BaseController {
 				HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public ResponseEntity<User> saveUser(@Valid @RequestBody User user) throws BaseException {
-		logger.info("UserController.clazz saveUser() user" + user);
+		logger.debug("UserController.clazz saveUser() user" + user);
 		return new ResponseEntity<User>(userService.save(user), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/user", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/users", method = RequestMethod.PATCH)
 	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) throws BaseException {
 		logger.info("UserController.clazz updateUser() User " + user);
 
 		if (invalidUser(user.getId())) {
-			logger.info("UserController.clazz updateUser() can't update User " + user.getUsername());
+			logger.debug("UserController.clazz updateUser() can't update User " + user.getUsername());
 			throw new UserException("Failed, user doesn't exist");
 		}
 		return new ResponseEntity<User>(userService.save(user), HttpStatus.OK);

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.orainteractive.simplechat.constant.SimpleChatConstant;
 import com.orainteractive.simplechat.po.CustomErrorResponse;
+import com.orainteractive.simplechat.po.Response;
 
 @ControllerAdvice
 public class RestExceptionHandler {
@@ -88,6 +89,13 @@ public class RestExceptionHandler {
 		}
 
 		return localizedErrorMessage;
+	}
+	
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<Response> authExceptionHandler(AuthenticationException ex) {
+		Response errors = new Response(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+		
+		return new ResponseEntity<Response>(errors, HttpStatus.BAD_REQUEST);
 	}
 
 }
