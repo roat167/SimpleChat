@@ -27,10 +27,10 @@ Your machine should have :
 	- Maven 3.5+
 	- MySQL 5.7+
 	
-	## Database configuration
-	- You can change the database connection and name in application.properties, you can find it inside resources directory
-	- Here I'm using root as my username and password, you can change according to your current configuration
-	 <img src="https://github.com/roat167/SimpleChat/blob/master/screenshot/databaseConfig.jpg" width="800"/>
+### Database configuration
+- You can change the database's connection and name in application.properties, you can find it inside resources directory
+- Here I'm using root as my username and password, you can change according to your current configuration
+ <img src="https://github.com/roat167/SimpleChat/blob/master/screenshot/databaseConfig.jpg" width="800"/>
 	
 # Build
 From the root of project directory (you will find pom.xml file there) run the following command
