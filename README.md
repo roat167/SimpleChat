@@ -67,7 +67,7 @@ The application will initialize some data from sample data set in import.sql in 
 The easiest way is to apply your token you got after login and manually put on header before sending the request.
 Put key as 'Authorization' and value 'Bearer ' then your token
 > See the screenshot:
-<img src="https://github.com/roat167/SimpleChat/blob/master/token.jpg" width="800"/>
+<img src="https://github.com/roat167/SimpleChat/blob/master/screenshot/token.JPG" width="800"/>
 
 ### User list
 - url: http://localhost:8080/user	(GET)	return list of users
