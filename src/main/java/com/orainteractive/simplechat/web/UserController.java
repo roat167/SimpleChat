@@ -94,6 +94,17 @@ public class UserController extends BaseController {
 		return new ResponseEntity<User>(userService.save(user), HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/users", method = RequestMethod.PUT)
+	public ResponseEntity<User> updateEntity(@Valid @RequestBody User user) throws BaseException {
+		logger.info("UserController.clazz updateUser() User " + user);
+
+		if (invalidUser(user.getId())) {
+			logger.debug("UserController.clazz updateUser() can't update User " + user.getUsername());
+			throw new UserException("Failed, user doesn't exist");
+		}
+		return new ResponseEntity<User>(userService.save(user), HttpStatus.OK);
+	}
+
 	private boolean invalidUser(Long id) {
 		return id > 0 && userService.getById(id) == null;
 	}

@@ -6,9 +6,11 @@ import java.util.Date;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.orainteractive.simplechat.constant.SimpleChatConstant;
 
+@RequestMapping(value = "/${api.path}")
 public class BaseController {
 
 	@InitBinder

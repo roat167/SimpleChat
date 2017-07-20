@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +33,7 @@ public class ChatMessageController extends BaseController {
 	@Autowired
 	private ChatMessageService chatMessageService;
 
-	@RequestMapping(value = "/message", method = RequestMethod.GET)
+	@RequestMapping(value = "/messages", method = RequestMethod.GET)
 	public ResponseEntity<CustomResponse<ChatMessage>> getMessages() {
 		logger.info("ChatMessageController.clazz getMessages()");
 
@@ -45,8 +46,8 @@ public class ChatMessageController extends BaseController {
 		return new ResponseEntity<CustomResponse<ChatMessage>>(result, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/messages/{page}", method = RequestMethod.GET)
-	public @ResponseBody CustomResponse<ChatMessage> getPageChats(@PathVariable("page") int page) {
+	@RequestMapping(value = "/messages", params = {"page"}, method = RequestMethod.GET)
+	public @ResponseBody CustomResponse<ChatMessage> getPageChats(@RequestParam("page") int page) {
 		logger.info("ChatMessageController.clazz getPageChats()");
 
 		Page<ChatMessage> list = chatMessageService.findSortedPaginatedByDate(page, SimpleChatConstant.PER_PAGE);
@@ -55,7 +56,7 @@ public class ChatMessageController extends BaseController {
 		return result;
 	}
 
-	@RequestMapping(value = "/message/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/messages/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ChatMessage> getMessage(@PathVariable("id") long id) throws ChatException {
 		logger.info("ChatMessageController.clazz getMessage() id " + id);
 
@@ -66,15 +67,15 @@ public class ChatMessageController extends BaseController {
 		return new ResponseEntity<ChatMessage>(chatMessageService.getById(id), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/message", method = RequestMethod.POST)
+	@RequestMapping(value = "/messages", method = RequestMethod.POST)
 	public ResponseEntity<ChatMessage> save(@Valid @RequestBody ChatMessage message) throws BaseException {
 		logger.info("ChatMessageController.clazz save() chat" + message);
 		return new ResponseEntity<ChatMessage>(chatMessageService.save(message), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/message", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/messages", method = RequestMethod.PATCH)
 	public ResponseEntity<ChatMessage> update(@Valid @RequestBody ChatMessage message) throws BaseException {
-		logger.info("UserController.clazz updateUser() User " + message);
+		logger.info("UserController.clazz update()  " + message);
 
 		if (message.getId() <= 0 || chatMessageService.getById(message.getId()) == null) {
 			logger.info(
@@ -83,4 +84,17 @@ public class ChatMessageController extends BaseController {
 		}
 		return new ResponseEntity<ChatMessage>(chatMessageService.save(message), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/messages", method = RequestMethod.PUT)
+	public ResponseEntity<ChatMessage> updateEntity(@Valid @RequestBody ChatMessage message) throws BaseException {
+		logger.info("UserController.clazz updateEntity() " + message);
+
+		if (message.getId() <= 0 || chatMessageService.getById(message.getId()) == null) {
+			logger.info(
+					"ChatMessageController.clazz updateEntity() can't update chat with message " + message.getMessage());
+			throw new ChatException("Failed, chat doesn't exist");
+		}
+		return new ResponseEntity<ChatMessage>(chatMessageService.save(message), HttpStatus.OK);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.orainteractive.simplechat;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
@@ -13,14 +14,13 @@ import com.orainteractive.simplechat.security.JwtFilter;
 //@Configuration
 @SpringBootApplication (exclude = {SecurityAutoConfiguration.class})
 public class SimpleChatApplication {
-	
+	@Value("${api.path}")
+	private String versionpath;
 	@Bean
 	public FilterRegistrationBean jwtFilter() {
 		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
 		registrationBean.setFilter(new JwtFilter());
-		registrationBean.addUrlPatterns("/user/*", "/users/*", "/logout");
-		registrationBean.addUrlPatterns("/chat/*", "/chats/*");
-		registrationBean.addUrlPatterns("/message/*", "/messages/*");
+		registrationBean.addUrlPatterns("/"+versionpath+"/*", "/logout");		
 
 		return registrationBean;
 	}

@@ -70,13 +70,13 @@ Put key as 'Authorization' and value 'Bearer ' then your token
 <img src="https://github.com/roat167/SimpleChat/blob/master/screenshot/token.JPG" width="800"/>
 
 ### User list
-- url: http://localhost:8080/user	(GET)	return list of users
+- url: http://localhost:8080/api/users	(GET)	return list of users
 
-- url: http://localhost:8080/users/0	(GET)	return paginated list of users, with page number 0 as requested, you can change the number to see next page if available 
+- url: http://localhost:8080/api/users?page=0	(GET)	return paginated list of users, with page number 0 as requested, you can change the number to see next page if available 
 
 Note: (username is unique)
 ### create user
-url: http://localhost:8080/user (POST), sample data (id is not required, see register )
+url: http://localhost:8080/api/users (POST), sample data (id is not required, see register )
  
 		 {
 		"id":"7",
@@ -87,10 +87,10 @@ url: http://localhost:8080/user (POST), sample data (id is not required, see reg
 		"email": "test@gmail.com"
 		}		 
 ### view user
-url: http://localhost:8080/user/1 (GET), 1 is user id
+url: http://localhost:8080/api/users/1 (GET), 1 is user id
 
 ### update user
-url: http://localhost:8080/user (PATCH), sample data
+url: http://localhost:8080/api/users (PATCH), sample data
  
 		 {
 		"id":"7",
@@ -102,13 +102,13 @@ url: http://localhost:8080/user (PATCH), sample data
 		}
 		
 ### Chat list
-- url: http://localhost:8080/chat	(GET)	return paginated list of chat, with page number 0 as default
+- url: http://localhost:8080/api/chats	(GET)	return paginated list of chat, with page number 0 as default
 
-- url: http://localhost:8080/chats/0	(GET)	(DESC sort by posted date)
+- url: http://localhost:8080/api/chats?page=0	(GET)	(DESC sort by posted date)
 return paginated list of chats, with page number 0 as requested, you can change the number to see next page if available 
 
 ### create chat
-url: http://localhost:8080/chat (POST) , sample data
+url: http://localhost:8080/api/chats (POST) , sample data
  
 		 {
 		"id":"5",
@@ -119,10 +119,10 @@ url: http://localhost:8080/chat (POST) , sample data
 
 
 ### view chat
-url: http://localhost:8080/chat/5 (GET), 5 is chat id
+url: http://localhost:8080/api/chats/5 (GET), 5 is chat id
 
 ### update chat
- url: http://localhost:8080/chat (PATCH), Sample data
+ url: http://localhost:8080/api/chats (PATCH), Sample data
  
   		{
 		"id":"1",
@@ -132,13 +132,13 @@ url: http://localhost:8080/chat/5 (GET), 5 is chat id
 		}
 
 ### Message list
-- url: http://localhost:8080/message	(GET)	return paginated list of messages, with page number 0 as default
+- url: http://localhost:8080/api/messages	(GET)	return paginated list of messages, with page number 0 as default
 
-- url: http://localhost:8080/messages/0	(GET)	(DESC sort by posted date)
+- url: http://localhost:8080/api/messages?page=0	(GET)	(DESC sort by posted date)
 return paginated list of messages, with page number 0 as requested, you can change the number to see next page if available 
 
 ### create message
-url: http://localhost:8080/chat (POST) , sample data
+url: http://localhost:8080/api/messages (POST) , sample data
  
 		 {
 		"id":"5",
@@ -149,17 +149,24 @@ url: http://localhost:8080/chat (POST) , sample data
 		}
 
 ### view message
-url: http://localhost:8080/message/1 (GET), 1 is chat message id
+url: http://localhost:8080/api/messages/1 (GET), 1 is chat message id
 
 ### update message
- url: http://localhost:8080/chat (PATCH), Sample data
+ url: http://localhost:8080/api/messages (PATCH), Sample data
  
   		{
 		"id":"1",
 		"owner": "1",
-		"message": "Update chat id 1 chat date",
-		"postedDate": "2016-10-04T22:44:30.652"
+		"chat": "1",
+		"message": "Update message id 1 chat date",
+		"postedDate": "2016-11-04T22:44:30.652"
 		}
+
+
+### Versioning
+The api path can '/api/' can be change in application.properties file. You can find the file under resources directory
+
+		api.path: api
 
 # Contributor
 
