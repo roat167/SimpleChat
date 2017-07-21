@@ -7,7 +7,8 @@ This is a simple chat application that allows user to:
 	- [x] view profile
 	- [x] edit profile 
 	- [x] create a chat
-	- [x] edit a chat, [ ] implements securirty(Only owner can edit)
+	- [x] edit a chat
+	- [x] edit profile/chat implements securirty(Only owner can edit)
 	- [x] list all chats
 	- [x] view all messages in a chat
 	- [x] create a message in a chat
