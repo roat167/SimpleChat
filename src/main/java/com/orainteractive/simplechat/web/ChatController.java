@@ -1,5 +1,6 @@
 package com.orainteractive.simplechat.web;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import com.orainteractive.simplechat.service.ChatService;
 @RestController
 public class ChatController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
+	
 	@Autowired
 	private ChatService chatService;
 
@@ -71,9 +73,11 @@ public class ChatController extends BaseController {
 	}
 
 	@RequestMapping(value = "/chats", method = RequestMethod.PATCH)
-	public ResponseEntity<Chat> update(@Valid @RequestBody Chat chat) throws BaseException {
+	public ResponseEntity<Chat> update(@Valid @RequestBody Chat chat, HttpServletRequest req) throws BaseException {
 		logger.info("UserController.clazz update() " + chat);
-
+		
+		verifyPermission(req, chat.getOwner().getId().toString());
+		
 		if (chat.getId() <= 0 || chatService.getById(chat.getId()) == null) {
 			logger.info("ChatController.clazz update() can't update chat with message " + chat.getMessage());
 			throw new ChatException("Failed, chat doesn't exist");
@@ -82,16 +86,19 @@ public class ChatController extends BaseController {
 	}
 
 	@RequestMapping(value = "/chats", method = RequestMethod.PUT)
-	public ResponseEntity<Chat> updateEntity(@Valid @RequestBody Chat chat) throws BaseException {
+	public ResponseEntity<Chat> updateEntity(@Valid @RequestBody Chat chat, HttpServletRequest req) throws BaseException {
 		logger.info("UserController.clazz updateEntity() " + chat);
 
+		verifyPermission(req, chat.getOwner().getId().toString());
+		
 		if (chat.getId() <= 0 || chatService.getById(chat.getId()) == null) {
 			logger.info("ChatController.clazz updateEntity() can't update chat with message " + chat.getMessage());
 			throw new ChatException("Failed, chat doesn't exist");
 		}
 		return new ResponseEntity<Chat>(chatService.save(chat), HttpStatus.OK);
 	}
-
+	
+	
 	/*
 	 * @InitBinder public void initBinder(WebDataBinder binder) {
 	 * binder.registerCustomEditor(User.class, "owner", new PropertiesEditor() {

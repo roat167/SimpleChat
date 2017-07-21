@@ -2,6 +2,7 @@ package com.orainteractive.simplechat.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -84,9 +85,11 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.PATCH)
-	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) throws BaseException {
+	public ResponseEntity<User> updateUser(@Valid @RequestBody User user, HttpServletRequest req) throws BaseException {
 		logger.info("UserController.clazz updateUser() User " + user);
 
+		verifyPermission(req, user.getId().toString());
+		
 		if (invalidUser(user.getId())) {
 			logger.debug("UserController.clazz updateUser() can't update User " + user.getUsername());
 			throw new UserException("Failed, user doesn't exist");
@@ -95,9 +98,11 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.PUT)
-	public ResponseEntity<User> updateEntity(@Valid @RequestBody User user) throws BaseException {
+	public ResponseEntity<User> updateEntity(@Valid @RequestBody User user, HttpServletRequest req) throws BaseException {
 		logger.info("UserController.clazz updateUser() User " + user);
 
+		verifyPermission(req, user.getId().toString());
+		
 		if (invalidUser(user.getId())) {
 			logger.debug("UserController.clazz updateUser() can't update User " + user.getUsername());
 			throw new UserException("Failed, user doesn't exist");

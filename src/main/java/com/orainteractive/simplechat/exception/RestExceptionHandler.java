@@ -97,5 +97,12 @@ public class RestExceptionHandler {
 		
 		return new ResponseEntity<Response>(errors, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(PermissionDeniedException.class)
+	public ResponseEntity<Response> exceptionChatHandler(PermissionDeniedException ex) {
+		Response errors = new Response(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+		
+		return new ResponseEntity<Response>(errors, HttpStatus.BAD_REQUEST);
+	}
 
 }
