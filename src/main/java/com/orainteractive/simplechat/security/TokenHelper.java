@@ -13,6 +13,7 @@ import com.orainteractive.simplechat.constant.JwtConstant;
 import com.orainteractive.simplechat.service.UserService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -37,14 +38,19 @@ public class TokenHelper {
 		return username;
 	}
 
-	public String generateToken(String username) {
-
-		return Jwts.builder().setIssuer(JwtConstant.APP_NAME)
+	public String generateToken(String username, String userid) {
+		JwtBuilder jwtBuilder = Jwts.builder()
+				.setIssuer(JwtConstant.APP_NAME)
 				.setSubject(username)
 				.setIssuedAt(generateCurrentDate())
 				.setExpiration(generateExpirationDate())
-				.signWith(SIGNATURE_ALGORITHM, JwtConstant.SECRET)
-				.compact();
+				.signWith(SIGNATURE_ALGORITHM, JwtConstant.SECRET);
+		
+		if (userid != null) {
+			jwtBuilder.setId(userid);
+		}
+		
+		return jwtBuilder.compact();
 	}
 
 	private Claims getClaimsFromToken(String token) {

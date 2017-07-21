@@ -56,16 +56,11 @@ public class LoginController {
 		if (!password.equals(pwd)) {
 			throw new InvalidLoginException("Invalid login. Please check your username and password.");
 		}
-		
-		jwtToken = tokenHelper.generateToken(username);		
+		String userid = user.getId().toString();
+		jwtToken = tokenHelper.generateToken(username, userid);		
 
 		return jwtToken;
 	}
-
-//	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-//	public void logout(HttpServletResponse response) throws BaseException {		
-//        CookieUtil.clear(response, JwtConstant.AUTH_COOKIE);
-//	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response) {

@@ -16,6 +16,7 @@ import com.orainteractive.simplechat.security.JwtFilter;
 public class SimpleChatApplication {
 	@Value("${api.path}")
 	private String versionpath;
+	
 	@Bean
 	public FilterRegistrationBean jwtFilter() {
 		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
