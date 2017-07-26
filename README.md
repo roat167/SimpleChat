@@ -8,11 +8,11 @@ This is a simple chat application that allows user to:
 	- [x] edit profile 
 	- [x] create a chat
 	- [x] edit a chat
-	- [x] edit profile/chat implements securirty(Only owner can edit)
+	- [x] edit profile/chat implements security(Only owner can edit)
 	- [x] list all chats
 	- [x] view all messages in a chat
 	- [x] create a message in a chat
-	- [ ] logout
+	- [x] logout
 
 # Technologies
 	- Java
@@ -21,12 +21,17 @@ This is a simple chat application that allows user to:
 	- Maven
 	- MySQL
 	- Log4j2
+	- JSON Web Token
+	- Redis
 
 # Requirements 
-Your machine should have :
+What you will need:
 	- JDK 1.8 or later version installed 
 	- Maven 3.5+
 	- MySQL 5.7+
+	- Redis 
+
+#### Note: For Windows user: To install Redis on follow https://redislabs.com/ebook/appendix-a/a-3-installing-on-windows/a-3-2-installing-redis-on-window/)
 	
 ### Database configuration
 - You can change the database's connection and name in application.properties, you can find it inside resources directory
@@ -69,11 +74,10 @@ The application will initialize some data from sample data set in import.sql in 
 		}
 
 - Upon successful login it will return  jwt token
-## Note: Test JWT in Postman
-The easiest way is to apply your token you got after login and manually put on header before sending the request.
-Put key as 'Authorization' and value 'Bearer ' then your token
-> See the screenshot:
-<img src="https://github.com/roat167/SimpleChat/blob/master/screenshot/token.JPG" width="800"/>
+
+### Logout
+- url: http://localhost:8080/logout	(GET)
+- It should return successfully logout message
 
 ### User list
 - url: http://localhost:8080/api/users	(GET)	return list of users

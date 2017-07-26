@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.orainteractive.simplechat.exception.InvalidLoginException;
 import com.orainteractive.simplechat.exception.UsernameNotFoundException;
 import com.orainteractive.simplechat.po.LoginRequest;
 import com.orainteractive.simplechat.po.UserTokenState;
+import com.orainteractive.simplechat.security.CookieUtil;
 import com.orainteractive.simplechat.security.TokenHelper;
 import com.orainteractive.simplechat.service.UserService;
 
@@ -29,6 +31,9 @@ public class LoginController {
 
 	@Autowired
 	private TokenHelper tokenHelper;
+	
+	@Value("${server.name}")
+	private String serverName;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) throws BaseException {
@@ -58,6 +63,8 @@ public class LoginController {
 		}
 		String userid = user.getId().toString();
 		jwtToken = tokenHelper.generateToken(username, userid);		
+		
+		CookieUtil.create(response, JwtConstant.TOKEN_COOKIE, jwtToken, false, -1, serverName);
 
 		return jwtToken;
 	}

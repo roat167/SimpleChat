@@ -17,12 +17,11 @@ import com.orainteractive.simplechat.constant.JwtConstant;
 import com.orainteractive.simplechat.exception.AuthenticationException;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
 
 public class JwtFilter extends GenericFilterBean {
-	private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);	
+	
 	@Override
 	public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain)
 			throws IOException, ServletException {
@@ -37,17 +36,25 @@ public class JwtFilter extends GenericFilterBean {
 
 			chain.doFilter(req, res);
 		} else {
-
-			if (authHeader == null || !authHeader.startsWith(JwtConstant.HEADER_PREFIX)) {
-				throw new AuthenticationException("Missing or invalid Authorization header");
-			}
+			
+			//Get token value from cookie
+			String token = CookieUtil.getValue(request, JwtConstant.TOKEN_COOKIE);
+			logger.debug("TokenCookie::: " + token);
+	        if (token == null) {
+	        	throw new AuthenticationException("Missing or invalid Authorization header");
+	        }
+	        
+	        //if (authHeader == null || !authHeader.startsWith(JwtConstant.HEADER_PREFIX)) {
+	        //	throw new AuthenticationException("Missing or invalid Authorization header");
+	        //}
 			// The part after Bearer length = 7
 			// Extract the token from the HTTP Authorization header
-			final String token = authHeader.substring(7);
+			//final String token = authHeader.substring(7);
+			
 
 			try {
-				// validate the token
-				final Claims claims = Jwts.parser().setSigningKey(JwtConstant.SECRET).parseClaimsJws(token).getBody();
+				// validate the token				
+				final Claims claims = TokenHelper.getClaimsFromToken(token);
 				request.setAttribute("claims", claims);
 				logger.debug("claim " + claims);
 

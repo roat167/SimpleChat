@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,23 +15,24 @@ import com.orainteractive.simplechat.constant.JwtConstant;
 import com.orainteractive.simplechat.service.UserService;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class TokenHelper {
-
+	private static final String REDIS_SET_ACTIVE_SUBJECTS = "active-subjects";
+	private static final Logger logger = LoggerFactory.getLogger(RedisUtil.class);
+	
 	@Autowired
 	private UserService userService;
 
-	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
+	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;	
 
 	public String getUsernameFromToken(String token) {
 		String username;
 		
 		try {
-			final Claims claims = this.getClaimsFromToken(token);
+			final Claims claims = TokenHelper.getClaimsFromToken(token);
 			username = claims.getSubject();
 		} catch (Exception e) {
 			username = null;
@@ -39,28 +42,33 @@ public class TokenHelper {
 	}
 
 	public String generateToken(String username, String userid) {
-		JwtBuilder jwtBuilder = Jwts.builder()
+		String token = Jwts.builder()
 				.setIssuer(JwtConstant.APP_NAME)
 				.setSubject(username)
 				.setIssuedAt(generateCurrentDate())
 				.setExpiration(generateExpirationDate())
-				.signWith(SIGNATURE_ALGORITHM, JwtConstant.SECRET);
+				.signWith(SIGNATURE_ALGORITHM, JwtConstant.SECRET)		
+				.setId(userid).compact();		
 		
-		if (userid != null) {
-			jwtBuilder.setId(userid);
-		}
+		RedisUtil.INSTANCE.sadd(REDIS_SET_ACTIVE_SUBJECTS, username);
 		
-		return jwtBuilder.compact();
+		return token;
 	}
 
-	private Claims getClaimsFromToken(String token) {
+	public static Claims getClaimsFromToken(String token) {		
 		Claims claims;
-		
+		 
 		try {
+			logger.info("getClaimsFromToken: ");			
 			claims = Jwts.parser()
 					.setSigningKey(JwtConstant.SECRET)
 					.parseClaimsJws(token)
 					.getBody();
+			
+			if (!RedisUtil.INSTANCE.sismember(REDIS_SET_ACTIVE_SUBJECTS, claims.getSubject())) {
+				return null;
+			}
+			 
 		} catch (Exception e) {
 			claims = null;
 		}
@@ -152,7 +160,7 @@ public class TokenHelper {
 		return null;
 	}
 	
-//	public void invalidateRelatedTokens(HttpServletRequest request, String name) {
-//		
-//	}
+	public static void invalidateRelatedTokens(HttpServletRequest request) {
+		 RedisUtil.INSTANCE.srem(REDIS_SET_ACTIVE_SUBJECTS, (String) request.getAttribute("username"));
+	}
 }
