@@ -38,7 +38,7 @@ public enum RedisUtil {
 			jedis.sadd(key, value);
 		} 
 		catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.debug(e.getMessage());
 		}
 		finally {
 			if (jedis != null) {
@@ -61,7 +61,7 @@ public enum RedisUtil {
 			jedis.srem(key, value);
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.debug(e.getMessage());
 		}
 		finally {
 			if (jedis != null) {
@@ -84,7 +84,7 @@ public enum RedisUtil {
 			return jedis.sismember(key, value);
 		}
 		catch (Exception e) {			
-			logger.error(e.getMessage());
+			logger.debug(e.getMessage());
 			return false;
 		}
 		finally {

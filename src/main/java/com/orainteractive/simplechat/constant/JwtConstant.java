@@ -1,18 +1,52 @@
 package com.orainteractive.simplechat.constant;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtConstant {
-	//public static final String JWT_TOKEN_HEADER_PARAM = "X-Authorization";
-	public static final String FORM_BASED_LOGIN_ENTRY_POINT = "/login";
-	public static final String TOKEN_BASED_AUTH_ENTRY_POINT = "/**";
-	public static final String TOKEN_REFRESH_ENTRY_POINT = "/token";
 	public static String HEADER_PREFIX = "Bearer ";
-	
-	public static final String TOKEN_COOKIE = "coco";
-	public static final String APP_NAME = "simplechat";
-	public static final String SECRET = "secretkey";    
-	public static final int EXPIRES_IN = 600;    
-	public static final String AUTH_HEADER = "authorization";    
-	public static final String AUTH_COOKIE = "AUTH-TOKEN";
-	public static final String USER_COOKIE = "ora-u";
-	public static final String DOMAIN = "localhost";
+
+	public static String TOKEN_COOKIE;
+	public static String APP_NAME;
+	public static String SECRET;
+	public static int EXPIRES_IN;
+	public static String AUTH_HEADER;
+	public static String AUTH_COOKIE;
+	public static String DOMAIN;
+
+	@Value("${jwt.token-cookie}")
+	private void setTokenCookie(String tokenCookie) {
+		TOKEN_COOKIE = tokenCookie;
+	}
+
+	@Value("${spring.application.name}")
+	private void setApplicationName(String appName) {
+		APP_NAME = appName;
+	}
+
+	@Value("${jwt.secretkey}")
+	private void setSecretKey(String key) {
+		SECRET = key;
+	}
+
+	@Value("${jwt.expired-in}")
+	private void setExpiredDate(int expireIn) {
+		EXPIRES_IN = expireIn;
+	}
+
+	@Value("${jwt.auth-header}")
+	private void setAuthHeader(String header) {
+		AUTH_HEADER = header;
+	}
+
+	@Value("${jwt.auth-cookie}")
+	private void setAuthCookie(String authCookie) {
+		AUTH_COOKIE = authCookie;
+	}
+
+	@Value("${server.name}")
+	private void setDomain(String domain) {
+		DOMAIN = domain;
+	}
 }
