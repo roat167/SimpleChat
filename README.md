@@ -26,7 +26,7 @@ This is a simple chat application that allows user to:
 
 # Requirements 
 What you will need:
-	- JDK 1.8 or later version installed 
+	- JDK 1.8
 	- Maven 3.5+
 	- MySQL 5.7+
 	- Redis 
@@ -37,7 +37,16 @@ What you will need:
 - You can change the database's connection and name in application.properties, you can find it inside resources directory
 - Here I'm using root as my username and password, you can change according to your current configuration
  <img src="https://github.com/roat167/SimpleChat/blob/master/screenshot/databaseConfig.jpg" width="800"/>
-	
+
+# Using Docker for MySQL and Redis
+- Install docker in your local machine 
+  - Mac user: https://docs.docker.com/desktop/install/mac-install/
+  - Window user: https://docs.docker.com/desktop/install/windows-install/
+  - Linux user: https://docs.docker.com/desktop/install/linux-install/
+- Confirm your docker is up and running then run below command
+
+    ```docker compose up```
+
 # Build
 From the root of project directory (you will find pom.xml file there) run the following command
 	
@@ -48,54 +57,68 @@ From the root of project directory (you will find pom.xml file there) run the fo
 You also use the following command		
 
 		mvn spring-boot:run
-	
+
+Note: confirm your maven is pointing to correct java version, in our case it should be JDK 1.8, you can do so by running 
+
+``` mvn --version```
+
 # Test
 The application will initialize some data from sample data set in import.sql in resource directory.
 - Note: register and login request won't be filter with jwt. Other request required a valid token from successful login
 ## Using POSTMAN
 
 ### Register
-- url: http://localhost:8080/register	(POST)	
-		
-		{		
-		"username": "reg",
-		"password": "1234",
-		"firstName": "reg",
-		"lastName": "user",
-		"email": "test@gmail.com"
-		}
+
+	curl --location --request POST 'http://localhost:8080/register' \
+	 --header 'Content-Type: application/json' \
+	 --data-raw '{
+	 "username": "reg1234",
+	 "password": "1234",
+	 "firstName": "Jane",
+	 "lastName": "Dawn",
+	 "email": "test@gmail.com"
+	 }'
 
 ### Login
-- url: http://localhost:8080/login	(POST)	sample data
 
-		{		
-		"username": "reg",
-		"password": "1234"
-		}
+	curl --location --request POST 'http://localhost:8080/login' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+	"username": "reg1234",
+	"password": "1234"
+	}'
 
 - Upon successful login it will return  jwt token
 
 ### Logout
-- url: http://localhost:8080/logout	(GET)
+
+	curl --location --request GET 'http://localhost:8080/logout'
+
 - It should return successfully logout message
 
+## Start from here, below APIs required successfully user login
+- if you using different browser you have to include Cookie in your header with token
+- eg: gettting list of users
+
+
+    curl --location --request GET 'http://localhost:8080/api/users' \
+    --header 'Cookie: coco={{YOUR_AUTHENTICATED_TOKEN}}'
+
+- _YOUR_AUTHENTICATED_TOKEN_ this is generated cookies after loggin
+
 ### User list
-- url: http://localhost:8080/api/users	(GET)	return list of users
+- you need to successfully login first before access below API
+- List of users.
 
-- url: http://localhost:8080/api/users?page=0	(GET)	return paginated list of users, with page number 0 as requested, you can change the number to see next page if available 
 
-Note: (username is unique)
-### create user
-url: http://localhost:8080/api/users (POST), sample data (id is not required, see register )
- 
-		 {
-		"id":"7",
-		"username": "uzer7",
-		"password": "1234",
-		"firstName": "Python",
-		"lastName": "Piper",
-		"email": "test@gmail.com"
-		}		 
+    curl --location --request GET 'http://localhost:8080/api/users'
+
+
+- return paginated list of users, with page number 0 as requested, you can change the number to see next page if available 
+
+
+	curl --location --request GET 'http://localhost:8080/api/users?page=0'
+
 ### view user
 url: http://localhost:8080/api/users/1 (GET), 1 is user id
 
@@ -120,12 +143,14 @@ return paginated list of chats, with page number 0 as requested, you can change 
 ### create chat
 url: http://localhost:8080/api/chats (POST) , sample data
  
-		 {
-		"id":"5",
-		"owner": "1",
-		"message": "Chat message number 5 by user 1",
-		"postedDate": "2017-10-04T22:44:30.652"
-		}
+	curl --location --request POST 'http://localhost:8080/api/chats' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+	"id":"5",
+	"owner": "1",
+	"message": "Hello Chat message number 5 by user 1",
+	"postedDate": "2024-10-04T22:44:30.652"
+	}'
 
 
 ### view chat
@@ -150,13 +175,15 @@ return paginated list of messages, with page number 0 as requested, you can chan
 ### create message
 url: http://localhost:8080/api/messages (POST) , sample data
  
-		 {
-		"id":"5",
-		"user": "1",
-		"chat": "1",
-		"message": "message reply to chat id 1",
-		"postedDate": "2014-05-04T22:44:30.652"
-		}
+	curl --location --request POST 'http://localhost:8080/api/messages' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+	"id": "5",
+	"user": "1",
+	"chat": "1",
+	"message": "Hello Message reply to chat id 1",
+	"postedDate": "2024-05-04T22:44:30.652"
+	}'
 
 ### view message
 url: http://localhost:8080/api/messages/1 (GET), 1 is chat message id
