@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:5.7
+    platform: linux/x86_64
+    container_name: mysql-chat
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'orachat'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    command: ["--ssl=0"]
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=1
